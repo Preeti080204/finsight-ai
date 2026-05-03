@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+
+# Data (CRITICAL)
+data/
+*.csv
+
+# Env
+.env
+
+# Misc
+.DS_Store
