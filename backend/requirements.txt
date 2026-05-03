@@ -3,3 +3,4 @@ uvicorn
 pandas
 sqlalchemy
 python-multipart
+psycopg2-binary
