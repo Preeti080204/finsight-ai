@@ -33,7 +33,7 @@ def get_data(user_id: int):
 
 
 # -----------------------------
-# SCHEMA (FIXED)
+# SCHEMA
 # -----------------------------
 class TransactionInput(BaseModel):
     date: str
@@ -43,7 +43,7 @@ class TransactionInput(BaseModel):
 
 
 # -----------------------------
-# BUILD USER PROFILE (FIXED)
+# BUILD USER PROFILE
 # -----------------------------
 @router.post("/build-profile")
 def build_profile(transactions: List[TransactionInput], user_id: int = Query(...)):
@@ -74,22 +74,35 @@ def build_profile(transactions: List[TransactionInput], user_id: int = Query(...
 
 
 # -----------------------------
-# FEEDBACK
+# FEEDBACK (FIXED)
 # -----------------------------
 @router.post("/feedback")
 def save_feedback(data: dict):
     db = SessionLocal()
 
-    fb = Feedback(
-        transaction_id=data["transaction_id"],
-        label=data["label"],
-    )
+    try:
+        transaction_id = data.get("transaction_id")
+        label = data.get("label")
 
-    db.add(fb)
-    db.commit()
-    db.close()
+        if transaction_id is None or label is None:
+            return {"error": "Missing transaction_id or label"}
 
-    return {"message": "Feedback saved"}
+        fb = Feedback(
+            transaction_id=transaction_id,
+            label=label,
+        )
+
+        db.add(fb)
+        db.commit()
+
+        return {"message": "Feedback saved"}
+
+    except Exception as e:
+        print("FEEDBACK ERROR:", str(e))
+        return {"error": str(e)}
+
+    finally:
+        db.close()
 
 
 # -----------------------------
@@ -116,6 +129,10 @@ def analyze(transactions: List[TransactionInput], user_id: int = Query(...)):
 
     df = pd.DataFrame([t.dict() for t in transactions])
 
+    # 🔥 FIX: ensure ID exists
+    if "id" not in df.columns:
+        df["id"] = range(1, len(df) + 1)
+
     df = apply_scoring(df)
 
     recommendations = generate_recommendations(df)
@@ -124,7 +141,7 @@ def analyze(transactions: List[TransactionInput], user_id: int = Query(...)):
     results = []
 
     for _, row in df.iterrows():
-        txn_id = row.get("id", 0)  # SAFE
+        txn_id = int(row["id"]) if "id" in row else 0
 
         reasons = row.get("explanations", [])
 
@@ -160,7 +177,7 @@ def analyze(transactions: List[TransactionInput], user_id: int = Query(...)):
 
 
 # -----------------------------
-# FILE UPLOAD (FIXED)
+# FILE UPLOAD
 # -----------------------------
 @router.post("/upload")
 async def upload_file(file: UploadFile = File(...), user_id: int = Query(...)):
@@ -168,7 +185,6 @@ async def upload_file(file: UploadFile = File(...), user_id: int = Query(...)):
 
     print("UPLOAD HIT")
 
-    # 🔥 DELETE ONLY THIS USER'S DATA (FIXED)
     db.query(Transaction).filter(Transaction.user_id == user_id).delete()
     db.commit()
 

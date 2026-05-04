@@ -82,7 +82,7 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
 
             <div className="flex gap-2 mt-3">
               <button
-                onClick={() => sendFeedback(id, "normal")}
+                onClick={() => sendFeedback(a.transaction.id, "normal")}
                 disabled={feedbackState[id] === "normal"}
                 className={`px-3 py-1 rounded ${
                   feedbackState[id] === "normal"
@@ -96,7 +96,7 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
               </button>
 
               <button
-                onClick={() => sendFeedback(id, "suspicious")}
+                onClick={() => sendFeedback(a.transaction.id, "suspicious")}
                 disabled={feedbackState[id] === "suspicious"}
                 className={`px-3 py-1 rounded ${
                   feedbackState[id] === "suspicious"
