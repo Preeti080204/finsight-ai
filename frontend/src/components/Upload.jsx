@@ -9,7 +9,7 @@ export default function Upload({ setData }) {
 
     if (!user_id) return;
 
-    const res = await fetch(`http://127.0.0.1:8000/data?user_id=${user_id}`);
+    const res = await fetch(`https://finsight-api-muwe.onrender.com/data?user_id=${user_id}`)
     const transactions = await res.json();
 
     if (!transactions.length) {
@@ -21,7 +21,7 @@ export default function Upload({ setData }) {
     const cleanTransactions = transactions.map(({ id, ...rest }) => rest);
 
     const analysisRes = await fetch(
-      `http://127.0.0.1:8000/analyze?user_id=${user_id}`,
+      `https://finsight-api-muwe.onrender.com/analyze?user_id=${user_id}`,
       {
         method: "POST",
         headers: {
@@ -57,7 +57,7 @@ export default function Upload({ setData }) {
       console.log("UPLOAD CLICKED");
 
       const uploadRes = await fetch(
-        `http://127.0.0.1:8000/upload?user_id=${user_id}`,
+        `https://finsight-api-muwe.onrender.com/upload?user_id=${user_id}`,
         {
           method: "POST",
           body: formData,
@@ -73,7 +73,7 @@ export default function Upload({ setData }) {
       const cleanTransactions = transactions.map(({ id, ...rest }) => rest);
 
       // ✅ build profile
-      await fetch(`http://127.0.0.1:8000/build-profile?user_id=${user_id}`, {
+      await fetch(`https://finsight-api-muwe.onrender.com/build-profile?user_id=${user_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function Upload({ setData }) {
 
       // ✅ analyze
       const analysisRes = await fetch(
-        `http://127.0.0.1:8000/analyze?user_id=${user_id}`,
+        `https://finsight-api-muwe.onrender.com/analyze?user_id=${user_id}`,
         {
           method: "POST",
           headers: {

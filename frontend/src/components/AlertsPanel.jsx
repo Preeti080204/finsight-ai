@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API_URL from "../api/config";
 
 const getColor = (score) => {
   if (score > 0.7) return "text-red-400";
@@ -11,7 +12,7 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
 
   const sendFeedback = async (id, label) => {
     try {
-      await fetch("http://127.0.0.1:8000/feedback", {
+      await fetch(`${API_URL}/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

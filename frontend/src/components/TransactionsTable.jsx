@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API_URL from "../api/config";
 
 export default function TransactionsTable({ transactions, rerunAnalysis }) {
 
@@ -6,7 +7,7 @@ export default function TransactionsTable({ transactions, rerunAnalysis }) {
 
   const sendFeedback = async (id, label) => {
     try {
-      await fetch("http://127.0.0.1:8000/feedback", {
+      await fetch(`${API_URL}/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

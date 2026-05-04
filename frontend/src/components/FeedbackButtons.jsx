@@ -1,8 +1,9 @@
 import React from "react";
+import API_URL from "../api/config";
 
 export default function FeedbackButtons({ id }) {
   const sendFeedback = async (label) => {
-    await fetch("http://127.0.0.1:8000/feedback", {
+    await fetch(`${API_URL}/feedback`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

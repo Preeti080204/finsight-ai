@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import API_URL from "../api/config";
 
 export default function Login({ setUserId }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const loginUser = async () => {
-    const res = await fetch("https://finsight-api-muwe.onrender.com/login", {
+    const res = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export default function Login({ setUserId }) {
   };
 
   const signupUser = async () => {
-    const res = await fetch("https://finsight-api-muwe.onrender.com/signup", {
+    const res = await fetch(`${API_URL}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

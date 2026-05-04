@@ -19,7 +19,7 @@ export default function Dashboard({ data }) {
       const user_id = localStorage.getItem("user_id");
 
       const res = await fetch(
-        `http://127.0.0.1:8000/data?user_id=${user_id}`
+        `https://finsight-api-muwe.onrender.com/data?user_id=${user_id}`
       );
 
       const data = await res.json();
@@ -92,7 +92,7 @@ export default function Dashboard({ data }) {
     const user_id = localStorage.getItem("user_id");
 
     const res = await fetch(
-      `http://127.0.0.1:8000/analyze?user_id=${user_id}`,
+      `https://finsight-api-muwe.onrender.com/analyze?user_id=${user_id}`,
       {
         method: "POST",
         headers: {
