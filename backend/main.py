@@ -7,6 +7,7 @@ from routes import router
 
 app = FastAPI()
 
+
 # CORS (open for now)
 app.add_middleware(
     CORSMiddleware,
