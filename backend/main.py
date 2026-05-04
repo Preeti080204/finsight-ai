@@ -11,11 +11,8 @@ app = FastAPI()
 # CORS (open for now)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://finsight-ai-swart.vercel.app",  # your frontend
-        "http://localhost:5173",                 # local dev
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],   # TEMP FIX — allow everything
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
