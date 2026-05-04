@@ -10,10 +10,6 @@ const getColor = (score) => {
 export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
   const [feedbackState, setFeedbackState] = useState({});
 
-  // 🔥 generate stable unique id per alert
-  const getId = (a, i) =>
-    `${a.transaction.date}-${a.transaction.desc}-${a.transaction.amount}-${i}`;
-
   const sendFeedback = async (id, label) => {
     try {
       await fetch(`${API_URL}/feedback`, {
@@ -53,7 +49,7 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
       <h2 className="text-xl mb-4">Smart Alerts</h2>
 
       {alerts.map((a, i) => {
-        const id = getId(a, i); // ✅ FIXED ID
+        const id = a.transaction.id;
 
         return (
           <div
@@ -81,12 +77,16 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
             </p>
 
             <div className="flex gap-2 mt-3">
+
+              {/* NORMAL BUTTON */}
               <button
-                onClick={() => sendFeedback(a.transaction.id, "normal")}
+                onClick={() => sendFeedback(id, "normal")}
                 disabled={feedbackState[id] === "normal"}
-                className={`px-3 py-1 rounded ${
+                className={`px-3 py-1 rounded transition ${
                   feedbackState[id] === "normal"
-                    ? "bg-green-800"
+                    ? "bg-green-800 cursor-not-allowed"
+                    : feedbackState[id] === "suspicious"
+                    ? "bg-green-900 opacity-50 cursor-not-allowed"
                     : "bg-green-600 hover:bg-green-500"
                 }`}
               >
@@ -95,12 +95,15 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
                   : "Normal"}
               </button>
 
+              {/* SUSPICIOUS BUTTON */}
               <button
-                onClick={() => sendFeedback(a.transaction.id, "suspicious")}
+                onClick={() => sendFeedback(id, "suspicious")}
                 disabled={feedbackState[id] === "suspicious"}
-                className={`px-3 py-1 rounded ${
+                className={`px-3 py-1 rounded transition ${
                   feedbackState[id] === "suspicious"
-                    ? "bg-red-800"
+                    ? "bg-red-800 cursor-not-allowed"
+                    : feedbackState[id] === "normal"
+                    ? "bg-red-900 opacity-50 cursor-not-allowed"
                     : "bg-red-600 hover:bg-red-500"
                 }`}
               >
@@ -108,6 +111,7 @@ export default function AlertsPanel({ alerts = [], rerunAnalysis }) {
                   ? "✔ Marked Suspicious"
                   : "Suspicious"}
               </button>
+
             </div>
           </div>
         );
